@@ -25,4 +25,13 @@ public interface IAnimeService extends IService<Anime> {
      * @return 动漫排行榜数据列表
      */
     List<Map<String, Object>> getAnimeRanking();
+
+    /**
+     * 搜索动漫
+     * @param keyword 搜索关键词
+     * @param limit 返回数据数量
+     * @param offset 偏移量
+     * @return 搜索结果列表
+     */
+    List<Map<String, Object>> searchAnime(String keyword, Integer limit, Integer offset);
 }

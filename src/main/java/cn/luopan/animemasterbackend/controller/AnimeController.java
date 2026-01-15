@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -60,6 +61,29 @@ public class AnimeController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "获取失败: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 搜索动漫
+     * @return 搜索结果
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> searchAnime(@RequestParam String keyword, 
+                                           @RequestParam(required = false) Integer limit, 
+                                           @RequestParam(required = false) Integer offset) {
+        try {
+            List<Map<String, Object>> searchResults = animeService.searchAnime(keyword, limit, offset);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "搜索成功");
+            response.put("data", searchResults);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "搜索失败: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
